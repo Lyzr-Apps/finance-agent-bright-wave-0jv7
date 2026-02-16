@@ -1,0 +1,36 @@
+{
+  "agent_name": "Email Transaction Agent",
+  "agent_id": "6992c1d9db29f3a7c1dd9945",
+  "description": "Fetches credit card transaction emails from Gmail inbox using search queries, extracts transaction details (merchant, amount, date, card name) from email text",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "transactions": [
+      {
+        "merchant": "string",
+        "amount": "number",
+        "date": "string",
+        "card_name": "string",
+        "category_hint": "string"
+      }
+    ],
+    "total_emails_scanned": "number",
+    "date_range": "string",
+    "summary": "string"
+  },
+  "example_response": {
+    "transactions": [
+      {
+        "merchant": "sample string",
+        "amount": 0,
+        "date": "sample string",
+        "card_name": "sample string",
+        "category_hint": "sample string"
+      }
+    ],
+    "total_emails_scanned": 0,
+    "date_range": "sample string",
+    "summary": "sample string"
+  }
+}

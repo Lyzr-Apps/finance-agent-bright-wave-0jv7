@@ -1,0 +1,86 @@
+{
+  "agent_name": "Finance Coordinator Agent",
+  "agent_id": "6992c20848cf09a10ff22202",
+  "description": "Coordinates the email fetching and financial analysis workflow; routes transaction data between sub-agents and aggregates the final structured financial report for the user",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "report_type": "string",
+    "income_summary": {
+      "net_income": "number",
+      "total_fixed_expenses": "number",
+      "total_variable_expenses": "number",
+      "total_emi": "number",
+      "total_outflow": "number",
+      "savings": "number",
+      "savings_rate": "number"
+    },
+    "credit_cards": [
+      {
+        "card_name": "string",
+        "limit": "number",
+        "spend": "number",
+        "utilization_percent": "number"
+      }
+    ],
+    "category_breakdown": [
+      {
+        "category": "string",
+        "amount": "number",
+        "percent_of_total": "number",
+        "transaction_count": "number"
+      }
+    ],
+    "risk_alerts": [
+      {
+        "alert_type": "string",
+        "message": "string",
+        "severity": "string"
+      }
+    ],
+    "safe_to_spend": "number",
+    "analysis_period": "string",
+    "advice": "string",
+    "follow_up_response": "string"
+  },
+  "example_response": {
+    "report_type": "sample string",
+    "income_summary": {
+      "net_income": 0,
+      "total_fixed_expenses": 0,
+      "total_variable_expenses": 0,
+      "total_emi": 0,
+      "total_outflow": 0,
+      "savings": 0,
+      "savings_rate": 0
+    },
+    "credit_cards": [
+      {
+        "card_name": "sample string",
+        "limit": 0,
+        "spend": 0,
+        "utilization_percent": 0
+      }
+    ],
+    "category_breakdown": [
+      {
+        "category": "sample string",
+        "amount": 0,
+        "percent_of_total": 0,
+        "transaction_count": 0
+      }
+    ],
+    "risk_alerts": [
+      {
+        "alert_type": "sample string",
+        "message": "sample string",
+        "severity": "sample string"
+      }
+    ],
+    "safe_to_spend": 0,
+    "analysis_period": "sample string",
+    "advice": "sample string",
+    "follow_up_response": "sample string"
+  }
+}

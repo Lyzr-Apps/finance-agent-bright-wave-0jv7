@@ -1,0 +1,43 @@
+{
+  "app_name": "Personal Finance AI Assistant",
+  "created_at": "2026-02-16",
+  "status": "complete",
+  "agents": {
+    "email_transaction_agent": {
+      "agent_id": "6992c1d9db29f3a7c1dd9945",
+      "name": "Email Transaction Agent",
+      "type": "sub-agent",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "tools": ["GMAIL_FETCH_EMAILS"],
+      "response_schema_file": "response_schemas/email_transaction_agent_response.json"
+    },
+    "financial_analyst_agent": {
+      "agent_id": "6992c1f11de6d4d0944ce377",
+      "name": "Financial Analyst Agent",
+      "type": "sub-agent",
+      "provider": "Anthropic",
+      "model": "claude-sonnet-4-5",
+      "tools": [],
+      "response_schema_file": "response_schemas/financial_analyst_agent_response.json"
+    },
+    "finance_coordinator_agent": {
+      "agent_id": "6992c20848cf09a10ff22202",
+      "name": "Finance Coordinator Agent",
+      "type": "manager",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "tools": [],
+      "managed_agents": [
+        "6992c1d9db29f3a7c1dd9945",
+        "6992c1f11de6d4d0944ce377"
+      ],
+      "response_schema_file": "response_schemas/finance_coordinator_agent_response.json"
+    }
+  },
+  "primary_agent_id": "6992c20848cf09a10ff22202",
+  "composio_tools": ["GMAIL_FETCH_EMAILS"],
+  "rag_ids": [],
+  "schedule_ids": [],
+  "schedules": []
+}
