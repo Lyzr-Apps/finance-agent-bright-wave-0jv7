@@ -61,13 +61,13 @@ interface EMIProfile {
 }
 
 interface FixedExpenses {
-  rent: number
-  utilities: number
-  insurance: number
+  household: number
+  parents_support: number
 }
 
 interface FinancialProfile {
   salary: number
+  rent_received: number
   cards: CreditCardProfile[]
   emis: EMIProfile[]
   fixedExpenses: FixedExpenses
@@ -133,51 +133,52 @@ interface HistoryEntry {
 // ============================================================================
 
 const SAMPLE_PROFILE: FinancialProfile = {
-  salary: 8500,
+  salary: 150000,
+  rent_received: 25000,
   cards: [
-    { name: 'Chase Sapphire', limit: 15000 },
-    { name: 'Amex Gold', limit: 10000 },
+    { name: 'HDFC Regalia', limit: 500000 },
+    { name: 'SBI SimplyCLICK', limit: 200000 },
   ],
   emis: [
-    { name: 'Car Loan', amount: 450 },
-    { name: 'Student Loan', amount: 280 },
+    { name: 'Car Loan', amount: 18000 },
+    { name: 'Home Loan', amount: 35000 },
   ],
-  fixedExpenses: { rent: 1800, utilities: 220, insurance: 180 },
+  fixedExpenses: { household: 20000, parents_support: 15000 },
 }
 
 const SAMPLE_REPORT: FinancialReport = {
   report_type: 'Monthly Financial Analysis',
   income_summary: {
-    net_income: 8500,
-    total_fixed_expenses: 2200,
-    total_variable_expenses: 2850,
-    total_emi: 730,
-    total_outflow: 5780,
-    savings: 2720,
-    savings_rate: 32,
+    net_income: 175000,
+    total_fixed_expenses: 35000,
+    total_variable_expenses: 48500,
+    total_emi: 53000,
+    total_outflow: 136500,
+    savings: 38500,
+    savings_rate: 22,
   },
   credit_cards: [
-    { card_name: 'Chase Sapphire', limit: 15000, spend: 3200, utilization_percent: 21.3 },
-    { card_name: 'Amex Gold', limit: 10000, spend: 1850, utilization_percent: 18.5 },
+    { card_name: 'HDFC Regalia', limit: 500000, spend: 62000, utilization_percent: 12.4 },
+    { card_name: 'SBI SimplyCLICK', limit: 200000, spend: 38500, utilization_percent: 19.3 },
   ],
   category_breakdown: [
-    { category: 'Groceries', amount: 680, percent_of_total: 13.2, transaction_count: 12 },
-    { category: 'Dining Out', amount: 420, percent_of_total: 8.1, transaction_count: 8 },
-    { category: 'Transportation', amount: 310, percent_of_total: 6.0, transaction_count: 15 },
-    { category: 'Entertainment', amount: 280, percent_of_total: 5.4, transaction_count: 6 },
-    { category: 'Shopping', amount: 560, percent_of_total: 10.8, transaction_count: 9 },
-    { category: 'Subscriptions', amount: 120, percent_of_total: 2.3, transaction_count: 5 },
-    { category: 'Healthcare', amount: 240, percent_of_total: 4.6, transaction_count: 3 },
-    { category: 'Travel', amount: 240, percent_of_total: 4.6, transaction_count: 2 },
+    { category: 'Groceries', amount: 12000, percent_of_total: 12.4, transaction_count: 14 },
+    { category: 'Dining Out', amount: 8500, percent_of_total: 8.8, transaction_count: 10 },
+    { category: 'Transportation', amount: 6200, percent_of_total: 6.4, transaction_count: 18 },
+    { category: 'Entertainment', amount: 4800, percent_of_total: 5.0, transaction_count: 7 },
+    { category: 'Shopping', amount: 9500, percent_of_total: 9.8, transaction_count: 8 },
+    { category: 'Subscriptions', amount: 2200, percent_of_total: 2.3, transaction_count: 6 },
+    { category: 'Healthcare', amount: 3500, percent_of_total: 3.6, transaction_count: 2 },
+    { category: 'Travel', amount: 5800, percent_of_total: 6.0, transaction_count: 2 },
   ],
   risk_alerts: [
     { alert_type: 'Spending Trend', message: 'Dining expenses increased 18% compared to last month', severity: 'medium' },
     { alert_type: 'Budget Warning', message: 'Entertainment spending is approaching your monthly average', severity: 'low' },
-    { alert_type: 'Credit Alert', message: 'Chase Sapphire approaching 25% utilization threshold', severity: 'high' },
+    { alert_type: 'Credit Alert', message: 'HDFC Regalia approaching 15% utilization threshold', severity: 'high' },
   ],
-  safe_to_spend: 1420,
-  analysis_period: 'January 2026',
-  advice: 'Your savings rate of 32% is excellent. Consider reducing dining expenses which increased 18% this month. Your credit utilization remains healthy across both cards. Continue maintaining this disciplined approach to build your emergency fund.',
+  safe_to_spend: 24500,
+  analysis_period: 'February 2026',
+  advice: 'Your savings rate of 22% is solid. Consider reducing dining expenses which increased 18% this month. Your credit utilization remains healthy across both cards. Continue maintaining this disciplined approach to build your emergency fund.',
   follow_up_response: '',
 }
 
@@ -770,18 +771,36 @@ function ProfileForm({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-4">
-          {/* Monthly Salary */}
-          <div className="space-y-2">
-            <Label className="font-sans text-sm font-medium">Monthly Net Salary</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-sans">$</span>
-              <Input
-                type="number"
-                value={form.salary || ''}
-                onChange={(e) => updateSalary(e.target.value)}
-                className="pl-7 font-sans"
-                placeholder="8,500"
-              />
+          {/* Income Section */}
+          <div className="space-y-3">
+            <Label className="font-sans text-sm font-medium">Income</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-sans text-muted-foreground">Monthly Net Salary</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-sans">&#8377;</span>
+                  <Input
+                    type="number"
+                    value={form.salary || ''}
+                    onChange={(e) => updateSalary(e.target.value)}
+                    className="pl-7 font-sans"
+                    placeholder="1,50,000"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-sans text-muted-foreground">Rent Received Monthly</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-sans">&#8377;</span>
+                  <Input
+                    type="number"
+                    value={form.rent_received || ''}
+                    onChange={(e) => setForm((prev) => ({ ...prev, rent_received: parseFloat(e.target.value) || 0 }))}
+                    className="pl-7 font-sans"
+                    placeholder="25,000"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -807,7 +826,7 @@ function ProfileForm({
                 </div>
                 <div className="w-36">
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">&#8377;</span>
                     <Input
                       type="number"
                       value={card.limit || ''}
@@ -849,7 +868,7 @@ function ProfileForm({
                 </div>
                 <div className="w-36">
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">&#8377;</span>
                     <Input
                       type="number"
                       value={emi.amount || ''}
@@ -874,43 +893,30 @@ function ProfileForm({
           {/* Fixed Expenses */}
           <div className="space-y-3">
             <Label className="font-sans text-sm font-medium">Fixed Monthly Expenses</Label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label className="text-xs font-sans text-muted-foreground">Rent</Label>
+                <Label className="text-xs font-sans text-muted-foreground">Household</Label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">&#8377;</span>
                   <Input
                     type="number"
-                    value={form.fixedExpenses.rent || ''}
-                    onChange={(e) => updateFixed('rent', e.target.value)}
+                    value={form.fixedExpenses.household || ''}
+                    onChange={(e) => updateFixed('household', e.target.value)}
                     className="pl-7 font-sans text-sm"
-                    placeholder="1,800"
+                    placeholder="20,000"
                   />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs font-sans text-muted-foreground">Utilities</Label>
+                <Label className="text-xs font-sans text-muted-foreground">Parents Support</Label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">&#8377;</span>
                   <Input
                     type="number"
-                    value={form.fixedExpenses.utilities || ''}
-                    onChange={(e) => updateFixed('utilities', e.target.value)}
+                    value={form.fixedExpenses.parents_support || ''}
+                    onChange={(e) => updateFixed('parents_support', e.target.value)}
                     className="pl-7 font-sans text-sm"
-                    placeholder="220"
-                  />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs font-sans text-muted-foreground">Insurance</Label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-sans">$</span>
-                  <Input
-                    type="number"
-                    value={form.fixedExpenses.insurance || ''}
-                    onChange={(e) => updateFixed('insurance', e.target.value)}
-                    className="pl-7 font-sans text-sm"
-                    placeholder="180"
+                    placeholder="15,000"
                   />
                 </div>
               </div>
@@ -1089,6 +1095,7 @@ export default function Page() {
       action: 'analyze_finances',
       financial_profile: {
         monthly_salary: profile.salary,
+        rent_received: profile.rent_received,
         credit_cards: profile.cards.map((c) => ({ name: c.name, limit: c.limit })),
         emis: profile.emis.map((e) => ({ name: e.name, amount: e.amount })),
         fixed_expenses: profile.fixedExpenses,
@@ -1191,7 +1198,7 @@ export default function Page() {
           />
         ) : (
           <ProfileForm
-            profile={{ salary: 0, cards: [], emis: [], fixedExpenses: { rent: 0, utilities: 0, insurance: 0 } }}
+            profile={{ salary: 0, rent_received: 0, cards: [], emis: [], fixedExpenses: { household: 0, parents_support: 0 } }}
             onSave={handleSaveProfile}
           />
         )}
@@ -1231,7 +1238,7 @@ export default function Page() {
             </Button>
           </div>
           <ProfileForm
-            profile={displayProfile ?? { salary: 0, cards: [], emis: [], fixedExpenses: { rent: 0, utilities: 0, insurance: 0 } }}
+            profile={displayProfile ?? { salary: 0, rent_received: 0, cards: [], emis: [], fixedExpenses: { household: 0, parents_support: 0 } }}
             onSave={handleSaveProfile}
           />
         </div>
