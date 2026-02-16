@@ -186,8 +186,8 @@ const SAMPLE_REPORT: FinancialReport = {
 // ============================================================================
 
 function formatCurrency(value: number | undefined | null): string {
-  if (value == null || isNaN(value)) return '$0.00'
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
+  if (value == null || isNaN(value)) return '₹0.00'
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value)
 }
 
 function formatPercent(value: number | undefined | null): string {
